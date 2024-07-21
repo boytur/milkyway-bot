@@ -1,10 +1,28 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import React from 'react';
+import Dashboard from './pages/Dashboard';
+import Work from './pages/Work';
+import Layout from './Layout';
+import { PageSettingProvider } from './contexts/pageSettingContext';
+import('preline')
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      { index: true, element: <Dashboard /> },
+      { path: '/work', element: <Work /> },
+    ],
+  },
+]);
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+    <PageSettingProvider>
+      <RouterProvider router={router} />
+    </PageSettingProvider>
+  </React.StrictMode>
+);
