@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 type PageSettingContextType = {
   title: string;
@@ -9,6 +9,10 @@ const PageSettingContext = createContext<PageSettingContextType | undefined>(und
 
 export const PageSettingProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [title, setTitle] = useState<string>("");
+  
+  useEffect(() => {
+    document.title = "TEAM3 | " + title;
+  },[title]) 
 
   return (
     <PageSettingContext.Provider value={{ title, setTitle }}>
