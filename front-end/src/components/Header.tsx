@@ -13,7 +13,7 @@ const Header: React.FC = () => {
                 setTitle('แดชบอร์ด');
                 break;
             case '/work':
-                setTitle('ดูงาน');
+                setTitle('รายการลงงาน');
                 break;
                 case '/profile':
                     setTitle('โปรไฟล์');
