@@ -64,7 +64,7 @@ const Work: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-1 pt-2">
+    <div className="p-1 pt-2">
       <div className="mb-4 p-3 flex w-full border gap-2 bg-white rounded-md">
         <label className="block mb-2 text-sm font-medium text-gray-700">
           วันที่ลงงาน

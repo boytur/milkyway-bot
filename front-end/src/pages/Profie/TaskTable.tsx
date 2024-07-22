@@ -22,12 +22,12 @@ const TaskTable: React.FC = () => {
   }, []);
 
   return (
-    <div className="m0">
+    <div className="w-full border">
       <h1 className="text-xl font-semibold pb-4 m-1 pl-3 mt-3 border-b-[1px]">ตารางงานที่ทำ</h1>
-      <div className="-m-1.5 overflow-x-auto">
+      <div className="-m-1.5">
         <div className="p-1.5 min-w-full inline-block align-middle">
           <div>
-          <table>
+          <table className=" w-full">
               <thead>
                 <tr>
                   <th scope="col" className="px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase">ชื่องาน</th>
