@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import axios from "axios";
 dotenv.config();
 import User from "../models/User.model";
-import Encrypt from "../../utils/Encrypt";
+import Encrypt from "../utils/Encrypt";
 import { JwtPayload } from "jsonwebtoken";
 
 export class Authentication {

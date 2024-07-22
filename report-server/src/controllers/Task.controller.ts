@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Encrypt from "../../utils/Encrypt";
+import Encrypt from "../utils/Encrypt";
 import User from "../models/User.model";
 import { JwtPayload } from "jsonwebtoken";
 import Task from "../models/Task.model";
