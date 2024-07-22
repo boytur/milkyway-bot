@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import axios from "axios";
 dotenv.config();
 import User from "../models/User.model";
-import Encrypt from "../utils/Encrypt";
+import Encrypt from "../../utils/Encrypt";
 import { JwtPayload } from "jsonwebtoken";
 
 export class Authentication {
@@ -85,7 +85,7 @@ export class Authentication {
   static async refresh(req: Request, res: Response) {
     try {
       const authHeader = req.headers.authorization;
-      console.log(authHeader);
+
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(400).json({ error: "No refresh token provided" });
       }

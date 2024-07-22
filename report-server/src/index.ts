@@ -1,11 +1,11 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import { conectDb } from "../connection/connect";
+import { conectDb } from "./connection/connect";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 
-import { authRouter } from "../routes/Authentication.route";
+
+import { authRouter } from "./routes/Authentication.route";
 dotenv.config();
 
 const app: Express = express();
@@ -20,7 +20,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(cookieParser());
 
 app.use(
   morgan<Request, Response>(
