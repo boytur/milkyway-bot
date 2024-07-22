@@ -1,6 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../connection/connect';
 
+
 // Define the attributes for the User model
 interface UserAttributes {
   user_id: number;
@@ -16,10 +17,7 @@ interface UserAttributes {
 interface UserCreationAttributes extends Optional<UserAttributes, 'user_id' | 'discord_id'> {}
 
 // Define the User model class
-class User
-  extends Model<UserAttributes, UserCreationAttributes>
-  implements UserAttributes
-{
+class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public user_id!: number;
   public discord_id!: number;
   public user_fname!: string;
@@ -34,13 +32,14 @@ User.init(
   {
     user_id: {
       type: DataTypes.BIGINT,
+      allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
     },
     discord_id: {
       type: DataTypes.BIGINT,
       allowNull: false,
+      primaryKey: true,
     },
     user_fname: {
       type: DataTypes.STRING,
@@ -66,6 +65,7 @@ User.init(
   {
     sequelize,
     tableName: 'users',
+    timestamps: true,
   }
 );
 

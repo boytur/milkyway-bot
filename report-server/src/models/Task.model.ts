@@ -2,6 +2,7 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import User from './User.model';
 import { sequelize } from '../connection/connect';
 
+// Define the attributes for the Task model
 interface TaskAttributes {
   task_id: number;
   task_name: string;
@@ -10,10 +11,13 @@ interface TaskAttributes {
   date: string;
   is_done: boolean;
   is_check: boolean;
+  user_id: number;
 }
 
+// Define the optional attributes for the Task model
 interface TaskCreationAttributes extends Optional<TaskAttributes, 'task_id'> {}
 
+// Define the Task model class
 class Task extends Model<TaskAttributes, TaskCreationAttributes> implements TaskAttributes {
   public task_id!: number;
   public task_name!: string;
@@ -22,15 +26,17 @@ class Task extends Model<TaskAttributes, TaskCreationAttributes> implements Task
   public date!: string;
   public is_done!: boolean;
   public is_check!: boolean;
+  public user_id!: number; // Added this to match the foreign key
 }
 
+// Initialize the Task model
 Task.init(
   {
     task_id: {
       type: DataTypes.BIGINT,
+      allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      allowNull: false,
     },
     task_name: {
       type: DataTypes.STRING,
@@ -56,14 +62,19 @@ Task.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },
+    user_id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+    },
   },
   {
     sequelize,
     tableName: 'tasks',
+    timestamps: true,
   }
 );
 
-// Define association
+// Define associations
 Task.belongsTo(User, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 
 export default Task;
