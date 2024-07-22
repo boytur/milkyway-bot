@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import axios from "axios";
 dotenv.config();
@@ -13,8 +13,6 @@ export class Authentication {
     if (!code) {
       return res.status(400).json({ error: "No code provided" });
     }
-
-    console.log(code);
 
     try {
       const data = `client_id=${process.env.CL_ID}&client_secret=${process.env.CL_SECRET}&grant_type=authorization_code&code=${code}&redirect_uri=${process.env.REDIRECT_URI}&scope=identify%20email`;
@@ -134,10 +132,35 @@ export class Authentication {
         success: true,
         message: "Token refreshed successfully",
         user: user,
-        reff_tk: accessToken,
+        acc_tk: accessToken,
       });
     } catch (error) {
       console.error("Error during refresh:", error as Error | string);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+  static async authenticate(req: Request, res: Response, next: NextFunction) {
+    try {
+      
+      const authHeader = req.headers.authorization;
+
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ error: "UNAUTHORIZED" });
+      }
+
+      const acc_tk = authHeader.split(" ")[1];
+
+      const verified = await Encrypt.verifyToken(acc_tk);
+      if (!verified) {
+        return res.status(400).json({ error: "Invalid access token" });
+      }
+
+      if (verified) {
+        next();
+      }
+
+    } catch (error) {
+      console.error("Error during authentication:", error as Error | string);
       res.status(500).json({ error: "Internal server error" });
     }
   }
