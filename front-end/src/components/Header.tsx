@@ -15,6 +15,9 @@ const Header: React.FC = () => {
             case '/work':
                 setTitle('ดูงาน');
                 break;
+                case '/profile':
+                    setTitle('โปรไฟล์');
+                    break;
             default:
                 setTitle('Default Title');
         }
