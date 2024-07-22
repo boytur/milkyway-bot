@@ -2,12 +2,25 @@ import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import { conectDb } from "../connection/connect";
-import User from "../models/User.model";
-import Task from "../models/Task.model";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+
+import { authRouter } from "../routes/Authentication.route";
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+
+app.use(express.json());
+
+const corsOptions = {
+  origin: "http://localhost:5173",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.use(cookieParser());
 
 app.use(
   morgan<Request, Response>(
@@ -15,20 +28,24 @@ app.use(
   )
 );
 
-app.get("/", async (req: Request, res: Response) => {
-  try {
-    const users = await Task.findAndCountAll({
-    });
-    return res.status(200).json({ data: users });
-  } catch (error) {
-    console.error("Error getting data:", error);
-    return res
-      .status(500)
-      .json({
-        error: "Internal server error",
-        message: (error as Error).message,
-      });
-  }
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET,PUT,POST,DELETE,UPDATE,OPTIONS"
+  );
+  res.header(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept"
+  );
+  next();
+});
+
+app.use("/auth", authRouter);
+
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello World");
 });
 
 app.listen(port, async () => {
