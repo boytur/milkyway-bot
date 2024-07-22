@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.toggle-switch {
+    @apply relative inline-block w-12 h-6;
+  }
+
+  .toggle-switch input {
+    @apply opacity-0 w-0 h-0;
+  }
+
+  .slider {
+    @apply absolute pt-[1.6px] pl-[0.5px] cursor-pointer top-0 left-0 right-0 bottom-0 bg-gray-300 rounded-full transition-colors duration-300;
+  }
+
+  .slider:before {
+    @apply absolute content-[''] h-5 w-5 bg-white rounded-full transition-transform duration-300;
+    transform: translateX(0);
+  }
+
+  input:checked + .slider {
+    @apply bg-blue-600;
+  }
+
+  input:checked + .slider:before {
+    @apply translate-x-6;
+  }
