@@ -1,11 +1,12 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import { conectDb } from "./connection/connect";
+import { conectDb, sequelize } from "./connection/connect";
 import cors from "cors";
 
 
 import { authRouter } from "./routes/Authentication.route";
+import { taskRouter } from "./routes/Task.route";
 dotenv.config();
 
 const app: Express = express();
@@ -42,7 +43,7 @@ app.use(function (req, res, next) {
 });
 
 app.use("/auth", authRouter);
-
+app.use("/api", taskRouter);
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World");
 });
