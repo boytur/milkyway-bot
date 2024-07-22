@@ -31,6 +31,16 @@ export class Encrypt {
       throw new Error("Failed to verify JWT");
     }
   }
+
+  static async getUserData(token: string) {
+    try {
+      const user = jwt.decode(token);
+      return user;
+    } catch (err) {
+      console.log(err);
+      throw new Error("Failed to decode JWT");
+    }
+  }
 }
 
 export default Encrypt;
