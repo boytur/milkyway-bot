@@ -7,7 +7,12 @@ import { useSearchParams } from "react-router-dom";
 const Work: React.FC = () => {
   const { authState } = useAuthContext();
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [date, setDate] = useState<string>(new Date().toISOString().split("T")[0]);
+
+  const currentDate: Date = new Date();
+  currentDate.setHours(currentDate.getUTCHours() + 7);
+
+  const [date, setDate] = useState<string>(currentDate.toISOString().split("T")[0]);
+
   const [status, setStatus] = useState<string>("all");
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
