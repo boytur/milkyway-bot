@@ -57,7 +57,7 @@ export class TaskController {
             [Op.eq]: date,
           };
         }
-   
+
         if (status === "checked") {
           query.is_check = true;
         } else if (status === "unchecked") {
@@ -70,7 +70,6 @@ export class TaskController {
         where: query,
         include: [User],
       });
-
 
       return res.status(200).json({
         success: true,
@@ -86,6 +85,55 @@ export class TaskController {
     function isValidDate(dateString: string) {
       const regex = /^\d{4}-\d{2}-\d{2}$/;
       return regex.test(dateString);
+    }
+  }
+
+  static async getTaskById(req: Request, res: Response) {
+    try {
+      const discord_id = req.params.discord_id;
+
+      const taskRegex = /^\d+$/;
+      if (!taskRegex.test(discord_id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid input",
+        });
+      }
+
+      const user = await User.findOne({
+        where: {
+          discord_id: discord_id
+        },
+        attributes: ["user_id", "discord_id", "user_fname", "user_lname", "avatar"],
+      });
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+      const userId = user.user_id;
+
+      const tasks = await Task.findAndCountAll({
+        where: {
+          user_id: userId,
+        },
+      });
+
+      const userTasks = {
+        user: user,
+        tasks: tasks.rows,
+      };
+
+      return res.status(200).json({
+        success: true,
+        message: "Get task successfully!",
+        tasks:userTasks,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
     }
   }
 

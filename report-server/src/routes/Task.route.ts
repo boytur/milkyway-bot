@@ -11,4 +11,6 @@ Router.get(
 );
 Router.get("/tasks", Authentication.authenticate, TaskController.getTasks);
 Router.put("/tasks/:id", Authentication.authenticate, TaskController.updateTask);
+Router.get("/tasks/:discord_id", Authentication.authenticate, TaskController.getTaskById);
+
 export { Router as taskRouter };
