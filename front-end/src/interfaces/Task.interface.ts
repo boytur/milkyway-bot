@@ -1,8 +1,7 @@
-export interface Task {
-  User: {
-    user_fname: string;
-    user_lname: string;
-  };
+import { User } from "./User.interface";
+
+export interface Task extends User {
+  user: User;
   task_id: number;
   task_name: string;
   task_type: string;

@@ -4,3 +4,7 @@ export interface User {
   user_lname: string;
   avatar: string;
 }
+
+export interface UserTaskCount extends User {
+  task_count: number;
+}
