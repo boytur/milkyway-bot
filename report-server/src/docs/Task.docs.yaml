@@ -1,0 +1,205 @@
+openapi: 3.0.0
+info:
+  title: Task API
+  description: API for task related routes
+  version: 1.0.0
+tags:
+  - name: Tasks
+    description: Task related routes
+paths:
+  /my-tasks:
+    get:
+      summary: Get tasks for the authenticated user
+      tags:
+        - Tasks
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Get tasks successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  tasks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+        '403':
+          description: No token provided or unauthorized access
+        '500':
+          description: Internal server error
+  /tasks:
+    get:
+      summary: Get tasks based on query parameters
+      tags:
+        - Tasks
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: false
+          description: Filter tasks by date
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [checked, unchecked]
+          required: false
+          description: Filter tasks by status
+        - in: query
+          name: showUnchecked
+          schema:
+            type: string
+            enum: [true, false]
+          required: false
+          description: Show only unchecked tasks
+      responses:
+        '200':
+          description: Get tasks successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  date:
+                    type: string
+                  tasks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid date format
+        '500':
+          description: Internal server error
+  /tasks/{discord_id}:
+    get:
+      summary: Get tasks by user discord ID
+      tags:
+        - Tasks
+      parameters:
+        - in: path
+          name: discord_id
+          schema:
+            type: string
+          required: true
+          description: Discord ID of the user
+      responses:
+        '200':
+          description: Get task successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  tasks:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+                      tasks:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Task'
+        '400':
+          description: Invalid input
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+  /tasks/{id}:
+    put:
+      summary: Update task
+      tags:
+        - Tasks
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the task to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_name:
+                  type: string
+                is_done:
+                  type: boolean
+                task_type:
+                  type: string
+                is_check:
+                  type: boolean
+                work_date:
+                  type: string
+                  format: date
+      responses:
+        '200':
+          description: Task updated successfully
+        '400':
+          description: Invalid input
+        '403':
+          description: No token provided or unauthorized access
+        '404':
+          description: Task not found
+        '500':
+          description: Internal server error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        user_id:
+          type: string
+        discord_id:
+          type: string
+        user_fname:
+          type: string
+        user_lname:
+          type: string
+        avatar:
+          type: string
+    Task:
+      type: object
+      properties:
+        task_id:
+          type: string
+        task_name:
+          type: string
+        is_done:
+          type: boolean
+        task_type:
+          type: string
+        is_check:
+          type: boolean
+        work_date:
+          type: string
+          format: date
+        user_id:
+          type: string
