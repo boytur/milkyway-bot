@@ -1,7 +1,7 @@
 import { User } from "./User.interface";
 
 export interface Task extends User {
-  user: User;
+  User: User;
   task_id: number;
   task_name: string;
   task_type: string;

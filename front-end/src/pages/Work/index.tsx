@@ -135,7 +135,7 @@ const Work: React.FC = () => {
                       )}
                     </td>
                     <td className="table-td">
-                      {task.user_fname} {task.user_lname}
+                      {task.User.user_fname} {task.User.user_lname}
                     </td>
                     <td className="table-td">
                       {editingTask?.task_id === task.task_id ? (
