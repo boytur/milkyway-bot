@@ -1,0 +1,44 @@
+openapi: 3.0.0
+info:
+  title: Authentication API
+  description: API for authentication related routes
+  version: 1.0.0
+tags:
+  - name: Auth
+    description: Authentication related routes
+paths:
+  /auth/callback:
+    get:
+      summary: Handle OAuth2 callback
+      tags:
+        - Auth
+      parameters:
+        - in: query
+          name: code
+          schema:
+            type: string
+          required: true
+          description: The authorization code
+      responses:
+        '200':
+          description: The user is allowed to access the resource
+        '400':
+          description: No code provided
+        '403':
+          description: Not a team member
+        '500':
+          description: Internal server error
+  /auth/refresh:
+    post:
+      summary: Refresh access token
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: Token refreshed successfully
+        '400':
+          description: No refresh token provided or Invalid refresh token
+        '403':
+          description: Not a team member
+        '500':
+          description: Internal server error

@@ -1,0 +1,58 @@
+openapi: 3.0.0
+info:
+  title: User API
+  description: API for user related routes
+  version: 1.0.0
+tags:
+  - name: Users
+    description: User related routes
+paths:
+  /user/users:
+    get:
+      summary: Get users with their task counts
+      tags:
+        - Users
+      responses:
+        "200":
+          description: Successfully retrieved users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        discord_id:
+                          type: string
+                        user_fname:
+                          type: string
+                        user_lname:
+                          type: string
+                        avatar:
+                          type: string
+                        task_count:
+                          type: integer
+        "500":
+          description: Internal server error
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        discord_id:
+          type: string
+        user_fname:
+          type: string
+        user_lname:
+          type: string
+        avatar:
+          type: string
+        task_count:
+          type: integer

@@ -6,6 +6,10 @@ import cors from "cors";
 
 import { authRouter } from "./routes/Authentication.route";
 import { taskRouter } from "./routes/Task.route";
+import { dashboardRouter } from "./routes/Dashboard.route";
+import setupSwagger from "./swagger";
+import { userRouter } from "./routes/User.route";
+
 dotenv.config();
 
 const app: Express = express();
@@ -52,9 +56,15 @@ app.use(function (req, res, next) {
 
 app.use("/auth", authRouter);
 app.use("/api", taskRouter);
+app.use("/api/dashboard", dashboardRouter);
+app.use("/api/user", userRouter);
+
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World");
 });
+
+// Setup Swagger
+setupSwagger(app);
 
 app.listen(port, async () => {
   try {
