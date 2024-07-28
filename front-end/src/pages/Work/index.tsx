@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../utils/api";
 import { useAuthContext } from "../../contexts/authContext";
-import { Task } from "../../contexts/interfaces/Task.interface";
+import { Task } from "../../interfaces/Task.interface";
 import { useSearchParams } from "react-router-dom";
 
 const Work: React.FC = () => {
@@ -57,6 +57,7 @@ const Work: React.FC = () => {
     if (authState.isLoggedin) {
       fetchWork();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authState, date, status, showUnchecked]);
 
   const handleShowUncheckedChange = (checked: boolean) => {
@@ -65,7 +66,7 @@ const Work: React.FC = () => {
 
   return (
     <div className="p-1 pt-2">
-      <div className="mb-4 p-3 flex w-full border gap-2 bg-white rounded-md">
+      <div className="flex w-full gap-2 p-3 mb-4 bg-white border rounded-md">
         <label className="block mb-2 text-sm font-medium text-gray-700">
           วันที่ลงงาน
           <input
@@ -87,7 +88,7 @@ const Work: React.FC = () => {
             <option value="unchecked">ยังไม่ลงแพลน</option>
           </select>
         </label>
-        <label className="toggle-switch mt-8">
+        <label className="mt-8 toggle-switch">
           <input
             type="checkbox"
             checked={showUnchecked}
@@ -102,28 +103,28 @@ const Work: React.FC = () => {
       </div>
       <div>
         {tasks.length > 0 ? (
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div className="overflow-hidden bg-white shadow sm:rounded-lg">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+              <thead className="table-thead">
                 <tr>
                   {["ลำดับ", "วันที่ทำงาน", "ชื่อ - นามสกุล", "ชื่องาน", "เสร็จ", "ประเภท", "ลงแพลน", "แก้ไข"].map((heading) => (
-                    <th key={heading} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th key={heading} className="table-th">
                       {heading}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="table-tbody">
                 {tasks.map((task, index) => (
-                  <tr key={task.task_id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{index + 1}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <tr key={task.task_id} className="table-tr">
+                    <td className="table-td">{index + 1}</td>
+                    <td className="table-td">
                       {editingTask?.task_id === task.task_id ? (
                         <input
                           type="date"
                           value={editingTask.work_date}
                           onChange={(e) => setEditingTask({ ...editingTask, work_date: e.target.value })}
-                          className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         />
                       ) : (
                         new Date(task.work_date).toLocaleDateString("th-TH", {
@@ -133,27 +134,27 @@ const Work: React.FC = () => {
                         })
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {task.User.user_fname} {task.User.user_lname}
+                    <td className="table-td">
+                      {task.user_fname} {task.user_lname}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="table-td">
                       {editingTask?.task_id === task.task_id ? (
                         <input
                           type="text"
                           value={editingTask.task_name}
                           onChange={(e) => setEditingTask({ ...editingTask, task_name: e.target.value })}
-                          className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         />
                       ) : (
-                        <div className="whitespace-normal break-words">{task.task_name}</div>
+                        <div className="break-words whitespace-normal">{task.task_name}</div>
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="table-td">
                       {editingTask?.task_id === task.task_id ? (
                         <select
                           value={editingTask.is_done ? "completed" : "not_completed"}
                           onChange={(e) => setEditingTask({ ...editingTask, is_done: e.target.value === "completed" })}
-                          className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         >
                           <option value="completed">เสร็จ</option>
                           <option value="not_completed">ไม่เสร็จ</option>
@@ -164,12 +165,12 @@ const Work: React.FC = () => {
                         "ไม่เสร็จ"
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="table-td">
                       {editingTask?.task_id === task.task_id ? (
                         <select
                           value={editingTask.task_type}
                           onChange={(e) => setEditingTask({ ...editingTask, task_type: e.target.value })}
-                          className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                         >
                           <option value="Software design">Software design</option>
                           <option value="เอกสาร">เอกสาร</option>
@@ -183,7 +184,7 @@ const Work: React.FC = () => {
                         task.task_type
                       )}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="table-td">
                       <button
                         onClick={() => toggleCheck(task)}
                         className={`inline-flex items-center px-2.5 py-0.5 border border-transparent text-xs leading-4 font-medium rounded-full shadow-sm text-white ${
@@ -193,7 +194,7 @@ const Work: React.FC = () => {
                         {task.is_check ? "ลงแพลน" : "ยังไม่ลง"}
                       </button>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="table-td">
                       {editingTask?.task_id === task.task_id ? (
                         <button
                           onClick={() => updateTask(editingTask)}

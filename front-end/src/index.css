@@ -2,12 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.btn-primary {
+  @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
+}
+
+.card {
+  @apply rounded-lg max-w-sm w-[15rem] h-auto p-6 m-2 overflow-hidden bg-white shadow-lg;
+}
+
+.card-title {
+  @apply mt-3 mb-2 font-bold text-center;
+}
+
+.card-count {
+  @apply text-[2rem] text-center text-gray-700;
+}
+
 .toggle-switch {
     @apply relative inline-block w-12 h-6;
   }
 
   .toggle-switch input {
-    @apply opacity-0 w-0 h-0;
+    @apply w-0 h-0 opacity-0;
   }
 
   .slider {
@@ -26,3 +43,21 @@
   input:checked + .slider:before {
     @apply translate-x-6;
   }
+
+
+
+.table-th{
+  @apply px-4 py-3 text-start text-xs font-medium text-gray-500 uppercase
+}
+.table-td{
+  @apply px-4 py-4 text-sm font-medium text-gray-800 break-words whitespace-normal 
+}
+.table-thead{
+  @apply bg-gray-50
+}
+.table-tbody{
+  @apply bg-white divide-y divide-gray-200 
+}
+.table-tr{
+  @apply hover:bg-gray-100
+}
