@@ -10,6 +10,7 @@ import { AuthContextProvider } from "./contexts/authContext";
 import Callback from "./pages/Login/Callback";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profie";
+import Member from "./pages/Member";
 
 import("preline");
 
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
       { index: true, element: <ProtectedRoute element={<Dashboard />} /> },
       { path: "/work", element: <ProtectedRoute element={<Work />} /> },
       { path: "/profile", element: <ProtectedRoute element={<Profile />} /> },
+      {path: "/member", element: <ProtectedRoute element={<Member />} />},
     ],
   },
   {

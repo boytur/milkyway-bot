@@ -18,6 +18,9 @@ const Header: React.FC = () => {
                 case '/profile':
                     setTitle('โปรไฟล์');
                     break;
+                case '/member':
+                    setTitle('สมาชิก');
+                    break;
             default:
                 setTitle('Default Title');
         }
@@ -25,8 +28,8 @@ const Header: React.FC = () => {
 
     return (
         <header className="bg-white border-b border-gray-200 shadow-md">
-            <div className="container py-3 flex items-center justify-between">
-                <div className="flex items-center font-bold px-2">
+            <div className="container flex items-center justify-between py-3">
+                <div className="flex items-center px-2 font-bold">
                     <h1 className="text-xl">{title}</h1>
                 </div>
             </div>
