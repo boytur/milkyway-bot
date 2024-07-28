@@ -141,27 +141,34 @@ export class Authentication {
   }
   static async authenticate(req: Request, res: Response, next: NextFunction) {
     try {
-      
       const authHeader = req.headers.authorization;
 
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ error: "UNAUTHORIZED" });
+        return res.status(401).json({
+          success: false,
+          message: "No access token provided",
+        });
       }
 
       const acc_tk = authHeader.split(" ")[1];
 
       const verified = await Encrypt.verifyToken(acc_tk);
       if (!verified) {
-        return res.status(400).json({ error: "Invalid access token" });
+        return res.status(400).json({
+          success: false,
+          message: "Invalid access token",
+        });
       }
 
       if (verified) {
         next();
       }
-
     } catch (error) {
       console.error("Error during authentication:", error as Error | string);
-      res.status(500).json({ error: "Internal server error" });
+      res.status(401).json({
+        success: false,
+        message: "Invalid access token",
+      });
     }
   }
 }
