@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { usePageSetting } from '../contexts/pageSettingContext';
+import { usePageSetting } from '@/contexts/pageSettingContext';
 
 const Header: React.FC = () => {
     const location = useLocation();  // Get the current location

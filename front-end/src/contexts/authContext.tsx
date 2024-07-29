@@ -6,9 +6,9 @@ import {
   useEffect,
 } from "react";
 
-import { LocalStorage } from "../utils/LocalStorage";
+import { LocalStorage } from "@/utils/LocalStorage";
 import axios from "axios";
-import { User } from "../interfaces/User.interface";
+import { User } from "@/interfaces/User.interface";
 
 interface Auth {
   isLoggedin: boolean;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { api } from "../../utils/api";
-import { useAuthContext } from "../../contexts/authContext";
-import { Task } from "../../interfaces/Task.interface";
+import { api } from "@/utils/api";
+import { useAuthContext } from "@/contexts/authContext";
+import { Task } from "@/interfaces/Task.interface";
 import { useSearchParams } from "react-router-dom";
 
 const Work: React.FC = () => {

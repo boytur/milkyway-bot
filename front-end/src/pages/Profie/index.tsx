@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuthContext } from "../../contexts/authContext";
+import { useAuthContext } from "@/contexts/authContext";
 import TaskTable from "./TaskTable";
 
 const Profile: React.FC = () => {
@@ -12,21 +12,21 @@ const Profile: React.FC = () => {
     >
       {user && user.discord_id !== null && (
         <>
-          <div className=" bg-white m-2 flex justify-center border rounded-md">
-            <div className="h-full w-full border  flex flex-col items-center">
+          <div className="flex justify-center m-2 bg-white border rounded-md ">
+            <div className="flex flex-col items-center w-full h-full border">
               <div className="rounded-full border border-black object-cover w-[10rem] h-[10rem] flex justify-center overflow-hidden">
                 <img
-                  className="w-full h-full object-cover"
+                  className="object-cover w-full h-full"
                   src={`${user.avatar}`}
                   alt=""
                 />
               </div>
-              <p className=" text-lg font-bold mt-3 mb-2">
+              <p className="mt-3 mb-2 text-lg font-bold ">
                 {user?.user_fname} {user.user_lname}
               </p>
             </div>
           </div>
-          <div className="bg-white m-2 rounded-md border">
+          <div className="m-2 bg-white border rounded-md">
             <TaskTable />
           </div>
         </>

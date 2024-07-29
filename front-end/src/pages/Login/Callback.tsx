@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useAuthContext } from "../../contexts/authContext";
-import { LocalStorage } from "../../utils/LocalStorage";
+import { useAuthContext } from "@/contexts/authContext";
+import { LocalStorage } from "@/utils/LocalStorage";
 
 const Callback: React.FC = () => {
   const { setAuthState, setUser } = useAuthContext();

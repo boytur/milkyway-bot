@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Card from "../../components/Card";
-import { api } from "../../utils/api";
+import Card from "@/components/Card";
+import { api } from "@/utils/api";
 
 const Dashboard: React.FC = () => {
   const [reports, setReports] = useState<{ taskName: string; count: number }[]>(
