@@ -11,6 +11,7 @@ import Callback from "./pages/Login/Callback";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profie";
 import Member from "./pages/Member";
+import Retrospective from "./pages/Retrospective";
 
 import("preline");
 
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
       { path: "/work", element: <ProtectedRoute element={<Work />} /> },
       { path: "/profile", element: <ProtectedRoute element={<Profile />} /> },
       {path: "/member", element: <ProtectedRoute element={<Member />} />},
+      {path: "/retrospective", element: <ProtectedRoute element={<Retrospective />} />},
     ],
   },
   {

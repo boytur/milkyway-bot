@@ -21,6 +21,9 @@ const Header: React.FC = () => {
                 case '/member':
                     setTitle('สมาชิก');
                     break;
+                    case '/retrospective':
+                        setTitle('Sprint Retrospective Report');
+                        break;
             default:
                 setTitle('Default Title');
         }

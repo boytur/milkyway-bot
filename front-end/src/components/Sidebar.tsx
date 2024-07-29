@@ -123,6 +123,30 @@ const Sidebar: React.FC = () => {
                 สมาชิก
               </Link>
             </li>
+            <li>
+              <Link
+                to="/retrospective"
+                className={`flex items-center justify-start gap-2 pl-3 py-2 mt-2 rounded ${
+                  location.pathname === "/retrospective"
+                    ? "bg-gray-200 text-gray-600"
+                    : "text-gray-600 hover:bg-gray-200"
+                }`}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  id="document"
+                >
+                  <path
+                    fill="#200E32"
+                    d="M6 2C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8.82843C20 8.29799 19.7893 7.78929 19.4142 7.41421L14.5858 2.58579C14.2107 2.21071 13.702 2 13.1716 2H6ZM6 0H13.1716C14.2332 0 15.2332 0.421427 15.8787 1.17157L20.7071 6C21.4477 6.74057 22 7.86739 22 9V20C22 22.2091 20.2091 24 18 24H6C3.79086 24 2 22.2091 2 20V4C2 1.79086 3.79086 0 6 0ZM7 11H17V13H7V11ZM7 15H17V17H7V15ZM7 7H13V9H7V7Z"
+                  ></path>
+                </svg>
+                retrospective
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
