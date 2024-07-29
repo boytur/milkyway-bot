@@ -1,4 +1,4 @@
-import { useAuthContext } from "../../contexts/authContext";
+import { useAuthContext } from "@/contexts/authContext";
 import React, { useEffect } from "react";
 
 interface Props {}

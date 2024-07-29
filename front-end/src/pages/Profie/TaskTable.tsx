@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { api } from "../../utils/api";
-import { Task } from "../../interfaces/Task.interface";
-import { formatUTCtoThai } from "../../utils";
+import { api } from "@/utils/api";
+import { Task } from "@/interfaces/Task.interface";
+import { formatUTCtoThai } from "@/utils";
 
 const TaskTable: React.FC = () => {
   // State to store tasks

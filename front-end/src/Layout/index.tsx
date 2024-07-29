@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import 'preline/preline';
-import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
+import Sidebar from '@/components/Sidebar';
+import Header from '@/components/Header';
 
 function Layout() {    
     return (
