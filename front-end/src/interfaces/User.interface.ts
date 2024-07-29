@@ -6,5 +6,6 @@ export interface User {
 }
 
 export interface UserTaskCount extends User {
+  user_id: Key | null | undefined;
   task_count: number;
 }
