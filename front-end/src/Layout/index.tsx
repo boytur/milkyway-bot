@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 
 function Layout() {    
     return (
-        <div className="flex h-[100vh] bg-gray-100 border border-black">
+        <div className="flex h-[100vh] bg-gray-100 border">
            <main className="flex-1 lg:ml-64">
                 <Header/>
                 <Sidebar/>
