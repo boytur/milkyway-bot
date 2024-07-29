@@ -6,6 +6,9 @@
 .btn-primary {
   @apply px-4 py-2 font-bold text-white bg-blue-500 rounded;
 }
+.btn-secondary {
+  @apply px-4 py-2 font-bold text-white bg-gray-500 rounded;
+}
 
 .card {
   @apply rounded-lg max-w-sm w-[15rem] h-auto p-6 m-2 overflow-hidden bg-white shadow-lg;
@@ -60,4 +63,7 @@
 }
 .table-tr{
   @apply hover:bg-gray-100
+}
+.input-primary {
+  @apply block w-full px-3 py-2 text-base text-gray-700 placeholder-gray-400 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm;
 }
