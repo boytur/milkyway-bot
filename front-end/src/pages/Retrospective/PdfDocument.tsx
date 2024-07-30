@@ -181,7 +181,7 @@ const PdfDocument: React.FC<DocumentProps> = ({
             {couldBeBetter.trim() === "" ? (
               <Text style={styles.text}>ไม่มี</Text>
             ) : (
-              lessonsLearned
+              couldBeBetter
                 .split("\n")
                 .map((line, index) => (
                   <Text style={styles.text} key={index}>{`${
@@ -197,7 +197,7 @@ const PdfDocument: React.FC<DocumentProps> = ({
             {surprisedUs.trim() === "" ? (
               <Text style={styles.text}>ไม่มี</Text>
             ) : (
-              other
+              surprisedUs
                 .split("\n")
                 .map((line, index) => (
                   <Text style={styles.text} key={index}>{`${
