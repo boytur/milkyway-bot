@@ -167,7 +167,7 @@ const PdfDocument: React.FC<DocumentProps> = ({
             </View>
             <View style={styles.column}>
               {secondPart.map((line, index) => (
-                <Text style={styles.text} key={index}>{`${11}. ${line}`}</Text>
+                <Text style={styles.text} key={index}>{`${11 + index}. ${line}`}</Text>
               ))}
             </View>
           </View>
