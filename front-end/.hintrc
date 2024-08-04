@@ -3,6 +3,9 @@
     "development"
   ],
   "hints": {
-    "no-inline-styles": "off"
+    "no-inline-styles": "off",
+    "button-type": "off",
+    "axe/name-role-value": "off",
+    "axe/forms": "off"
   }
 }
