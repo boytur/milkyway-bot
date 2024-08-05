@@ -1,11 +1,10 @@
 import { useAuthContext } from "@/contexts/authContext";
 import { usePageSetting } from "@/contexts/pageSettingContext";
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { useParams } from "react-router-dom";
 import { Task } from "@/interfaces/Task.interface";
 import { User } from "@/interfaces/User.interface";
 import { api } from "@/utils/api";
-import { useState } from 'react';
 import { formatUTCtoThai } from "@/utils";
 
 const MemberDetail: React.FC = () => {
@@ -25,7 +24,7 @@ const MemberDetail: React.FC = () => {
   const fetchMemberDetail = async () => {
     try {
       const response = await api.get(`/api/tasks/${discordId}`);
-
+      console.log(response.data.tasks.user);
       setTasks(response.data.tasks.tasks);
       setUser(response.data.tasks.user);
       // Write your code here to fetch member detail using discordId
@@ -39,11 +38,16 @@ const MemberDetail: React.FC = () => {
     if (!authState.isLoggedin) {
       return;
     }
-    setTitle(`รายละเอียดงานของ ${user?.user_fname} ${user?.user_lname}`);
     fetchMemberDetail();
-  }, [authState.isLoggedin, discordId, setTitle]);
-
+    setTitle(`รายละเอียดงานของ ${user?.user_fname} ${user?.user_lname}`);
+  }, [authState.isLoggedin, discordId,setTitle]);
+  useEffect(() => {
+    if (user) {
+      setTitle(`รายละเอียดงานของ ${user.user_fname} ${user.user_lname}`);
+    }
+  }, [user, setTitle]);
   return (
+    console.log(user?.user_fname),
     <div
       className="overflow-hidden"
       style={{ height: "calc(100vh - 5rem)", overflowY: "scroll" }}
