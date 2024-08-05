@@ -24,7 +24,6 @@ const MemberDetail: React.FC = () => {
   const fetchMemberDetail = async () => {
     try {
       const response = await api.get(`/api/tasks/${discordId}`);
-      console.log(response.data.tasks.user);
       setTasks(response.data.tasks.tasks);
       setUser(response.data.tasks.user);
       // Write your code here to fetch member detail using discordId
@@ -47,7 +46,6 @@ const MemberDetail: React.FC = () => {
     }
   }, [user, setTitle]);
   return (
-    console.log(user?.user_fname),
     <div
       className="overflow-hidden"
       style={{ height: "calc(100vh - 5rem)", overflowY: "scroll" }}
