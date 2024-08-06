@@ -90,6 +90,9 @@ const MemberDetail: React.FC = () => {
                       วันที่ลงงาน
                     </th>
                     <th scope="col" className="table-th">
+                      ลงแพลน
+                    </th>
+                    <th scope="col" className="table-th">
                       สถานะ
                     </th>
                   </tr>
@@ -103,6 +106,21 @@ const MemberDetail: React.FC = () => {
                         {formatUTCtoThai(task.work_date)}
                       </td>
                       <td className="table-td">{formatUTCtoThai(task.date)}</td>
+                      <td className="table-td">
+                        <span
+                          style={{
+                            backgroundColor: task.is_check
+                              ? "#00FF00"
+                              : "#FF0000",
+                            color: "white",
+                            padding: "2px 5px",
+                            borderRadius: "3px",
+                          }}
+                        >
+                          {task.is_check ? "ลงแพลน" : "ยังไม่ลง"}
+                        </span>
+                      </td>
+
                       <td className="table-td">
                         {task.is_done ? "เสร็จ" : "ไม่เสร็จ"}
                       </td>
