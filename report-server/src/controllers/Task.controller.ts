@@ -102,7 +102,7 @@ export class TaskController {
 
       const user = await User.findOne({
         where: {
-          discord_id: discord_id
+          discord_id: discord_id,
         },
         attributes: ["user_id", "discord_id", "user_fname", "user_lname", "avatar"],
       });
@@ -119,6 +119,7 @@ export class TaskController {
         where: {
           user_id: userId,
         },
+        order: [["createdAt", "DESC"]],
       });
 
       const userTasks = {
