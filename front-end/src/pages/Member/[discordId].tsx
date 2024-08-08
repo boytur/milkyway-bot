@@ -1,25 +1,32 @@
 import { useAuthContext } from "@/contexts/authContext";
 import { usePageSetting } from "@/contexts/pageSettingContext";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Task } from "@/interfaces/Task.interface";
 import { User } from "@/interfaces/User.interface";
+import { api } from "@/utils/api";
+import { formatUTCtoThai } from "@/utils";
 
 const MemberDetail: React.FC = () => {
   const { setTitle } = usePageSetting();
   const { authState } = useAuthContext();
   const { discordId } = useParams<{ discordId: string }>();
+  const [users, setUsers] = useState<User | null>(null);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   /**
-   * @// add your name here
+   * @YourName
    * Function to fetch member detail
    * @returns {Promise<void>}
    * @async
    * @description fetch member detail from discordId
    */
-
   const fetchMemberDetail = async () => {
     try {
+      const response = await api.get(`/api/tasks/${discordId}`);
+      setUsers(response.data.tasks.user);
+      setTasks(response.data.tasks.tasks);
+
       // Write your code here to fetch member detail using discordId
     } catch (error) {
       // Handle any errors that occur during the fetch
@@ -31,11 +38,78 @@ const MemberDetail: React.FC = () => {
     if (!authState.isLoggedin) {
       return;
     }
-    setTitle(`รายละเอียดงานของ ${discordId}`);
     fetchMemberDetail();
-  }, [authState.isLoggedin, discordId, setTitle]);
+  }, [authState.isLoggedin, discordId]);
 
-  return <div>Member Detail {discordId}</div>;
+  useEffect(() => {
+    if (users) {
+      setTitle(`รายละเอียดงานของ ${users.user_fname} ${users.user_lname}`);
+    }
+  }, [users, setTitle]);
+
+  return (
+    <div
+      className="overflow-hidden"
+      style={{ height: "calc(100vh - 5rem)", overflowY: "scroll" }}
+    >
+      {users && users.discord_id !== null && (
+        <>
+          <div className="flex justify-center m-2 bg-white border rounded-md">
+            <div className="flex flex-col items-center w-full h-full border">
+              <div className="rounded-full border border-black object-cover w-[8rem] h-[8rem] flex justify-center overflow-hidden">
+                <img
+                  className="object-cover w-full h-full"
+                  src={`${users.avatar}`}
+                  alt={`${users.user_fname} ${users.user_lname}`}
+                />
+              </div>
+              <p className="mt-3 mb-2 text-lg font-bold">
+                {users.user_fname} {users.user_lname}
+              </p>
+            </div>
+          </div>
+          <div className="m-2 bg-white border rounded-md"></div>
+        </>
+      )}
+      <div className="w-full border">
+        <h1 className="text-xl font-semibold pb-4 m-1 pl-3 mt-3 border-b-[1px]">
+          ตารางงานที่ทำ
+        </h1>
+        <div className="-m-1.5">
+          <div className="p-1.5 min-w-full inline-block align-middle">
+            <div>
+              <table className="w-full">
+                <thead className="table-thead">
+                  <tr>
+                    <th scope="col" className="table-th">ชื่องาน</th>
+                    <th scope="col" className="table-th">ประเภท</th>
+                    <th scope="col" className="table-th">วันที่ทำงาน</th>
+                    <th scope="col" className="table-th">วันที่ลงงาน</th>
+                    <th scope="col" className="table-th">ตรวจ</th>
+                    <th scope="col" className="table-th">ลงงาน</th>
+                  </tr>
+                </thead>
+                <tbody className="table-tbody">
+                  {tasks.map((task) => (
+                    <tr key={task.task_id} className="table-tr">
+                      <td className="table-td">{task.task_name}</td>
+                      <td className="table-td">{task.task_type}</td>
+                      <td className="table-td">{formatUTCtoThai(task.work_date)}</td>
+                      <td className="table-td">{formatUTCtoThai(task.date)}</td>
+                      <td className="table-td">{task.is_done?"ตรวจเรียบร้อย":"ยังไม่ได้ตรวจ"}</td>
+                      
+                        
+                      <td className="table-td">{task.is_check?"ลงงาน":"ยังไม่ลงงาน"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default MemberDetail;

@@ -1,10 +1,12 @@
 import React from "react";
 import { useAuthContext } from "@/contexts/authContext";
 import TaskTable from "./TaskTable";
+import { api } from "@/utils/api";
 
 const Profile: React.FC = () => {
   const { user } = useAuthContext();
 
+  
   return (
     <div
       className="overflow-hidden"
