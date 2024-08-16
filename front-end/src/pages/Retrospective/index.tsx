@@ -3,6 +3,7 @@ import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { useAuthContext } from "@/contexts/authContext";
 import PdfDocument from "./PdfDocument";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { api } from "@/utils/api";
 
 const Retrospective: React.FC = () => {
   const { user } = useAuthContext();
@@ -25,7 +26,23 @@ const Retrospective: React.FC = () => {
 
   const [isPreview, setIsPreview] = useState<boolean>(false);
 
+  const fethTaskInSprint = async () => {
+    try {
+      const response = await api.get("api/tasks/sprints");
+
+      setCycle(response.data.sprint.sprint_name);
+      setWentWell(
+        response.data.tasks
+          .map((task: { task_name: string }) => task.task_name)
+          .join("\n")
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    fethTaskInSprint();
     if (user) {
       setFirstName(user.user_fname || "");
       setLastName(user.user_lname || "");
@@ -71,7 +88,6 @@ const Retrospective: React.FC = () => {
                 className="cursor-pointer input-primary"
               />
             </div>
-
             <div className="mb-4">
               <label className="block mb-1 font-medium">วงรอบที่</label>
               <input
