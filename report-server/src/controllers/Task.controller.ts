@@ -4,6 +4,7 @@ import User from "../models/User.model";
 import { JwtPayload } from "jsonwebtoken";
 import Task from "../models/Task.model";
 import { Op } from "sequelize";
+import { sprint } from "../data/sprintdata";
 
 export class TaskController {
   static async getUserTask(req: Request, res: Response) {
@@ -104,7 +105,13 @@ export class TaskController {
         where: {
           discord_id: discord_id,
         },
-        attributes: ["user_id", "discord_id", "user_fname", "user_lname", "avatar"],
+        attributes: [
+          "user_id",
+          "discord_id",
+          "user_fname",
+          "user_lname",
+          "avatar",
+        ],
       });
 
       if (!user) {
@@ -130,7 +137,7 @@ export class TaskController {
       return res.status(200).json({
         success: true,
         message: "Get task successfully!",
-        tasks:userTasks,
+        tasks: userTasks,
       });
     } catch (err) {
       console.error(err);
@@ -190,6 +197,61 @@ export class TaskController {
       });
     } catch (err) {
       console.log(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  static async getSprintTasks(req: Request, res: Response) {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        return res.status(403).json({ error: "No token provided" });
+      }
+
+      const acc_tk = authHeader.split(" ")[1];
+      const user = (await Encrypt.getUserData(acc_tk)) as JwtPayload;
+
+      if (!user) {
+        return res
+          .status(403)
+          .json({ error: "You are not allowed to access this resource" });
+      }
+
+      // Find the current sprint
+      const sprintTime = sprint.find((sprint) => {
+        const today = new Date();
+        return (
+          new Date(sprint.sprint_start) <= today &&
+          new Date(sprint.sprint_end) >= today
+        );
+      });
+
+      if (!sprintTime) {
+        return res.status(404).json({
+          success: false,
+          message: "No sprint available",
+        });
+      }
+
+      // Find tasks in the current sprint
+      const tasks = await Task.findAll({
+        where: {
+          user_id: user.user_id,
+          work_date: {
+            [Op.between]: [sprintTime.sprint_start, sprintTime.sprint_end],
+          },
+        },
+      });
+
+      // Return the sprint and tasks
+      return res.status(200).json({
+        success: true,
+        message: "Get sprint tasks successfully!",
+        sprint: sprintTime,
+        tasks,
+      });
+    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: "Internal server error" });
     }
   }
