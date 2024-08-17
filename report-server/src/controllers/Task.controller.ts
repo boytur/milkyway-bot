@@ -255,4 +255,51 @@ export class TaskController {
       res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  static async getTaskBySprint(req: Request, res: Response) {
+    try {
+      const sprintReq = req.params.sprint as string | undefined;
+
+      const replaceSlash = sprintReq?.replace("-", "/");
+
+      const findSprint = sprint.find(
+        (sprint) => sprint.sprint_name === replaceSlash
+      );
+
+      if (!findSprint) {
+        return res.status(404).json({
+          success: false,
+          message: "Sprint not found",
+        });
+      }
+
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        return res.status(403).json({ error: "No token provided" });
+      }
+
+      const acc_tk = authHeader.split(" ")[1];
+      const user = (await Encrypt.getUserData(acc_tk)) as JwtPayload;
+
+      const tasks = await Task.findAll({
+        where: {
+          user_id: user.user_id,
+          work_date: {
+            [Op.between]: [findSprint.sprint_start, findSprint.sprint_end],
+          },
+        },
+      });
+
+      // Return the sprint and tasks
+      return res.status(200).json({
+        success: true,
+        message: "Get sprint tasks successfully!",
+        sprint: findSprint,
+        tasks,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }

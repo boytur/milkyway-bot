@@ -24,6 +24,12 @@ Router.get(
 );
 
 Router.get(
+  "/tasks/sprints/:sprint",
+  Authentication.authenticate,
+  TaskController.getTaskBySprint
+);
+
+Router.get(
   "/tasks/:discord_id",
   Authentication.authenticate,
   TaskController.getTaskById

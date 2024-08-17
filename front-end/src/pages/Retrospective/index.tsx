@@ -4,6 +4,7 @@ import { useAuthContext } from "@/contexts/authContext";
 import PdfDocument from "./PdfDocument";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { api } from "@/utils/api";
+import { sprints } from "@/data/sprint";
 
 const Retrospective: React.FC = () => {
   const { user } = useAuthContext();
@@ -18,17 +19,29 @@ const Retrospective: React.FC = () => {
     new Date().toISOString().split("T")[0]
   );
   const [cycle, setCycle] = useState<string>("");
-  const [wentWell, setWentWell] = useState<string>("");
+  const [wentWell, setWentWell] = useState<string>("กำลังค้นหางานของคุณ.....");
   const [couldBeBetter, setCouldBeBetter] = useState<string>("");
   const [surprisedUs, setSurprisedUs] = useState<string>("");
   const [lessonsLearned, setLessonsLearned] = useState<string>("");
   const [other, setOther] = useState<string>("");
 
   const [isPreview, setIsPreview] = useState<boolean>(false);
+  const [sprint, setSprint] = useState<string>(
+    sprints
+      .filter(
+        (s) =>
+          new Date(s.sprint_end) >= new Date() &&
+          new Date(s.sprint_start) <= new Date()
+      )
+      .map((s) => s.sprint_name)
+      .join(", ") || "No current sprint available"
+  );
 
-  const fethTaskInSprint = async () => {
+  const fecthTaskBySprint = async () => {
     try {
-      const response = await api.get("api/tasks/sprints");
+      const response = await api.get(
+        `api/tasks/sprints/${sprint.replace("/", "-")}`
+      );
 
       setCycle(response.data.sprint.sprint_name);
       setWentWell(
@@ -42,12 +55,13 @@ const Retrospective: React.FC = () => {
   };
 
   useEffect(() => {
-    fethTaskInSprint();
+    fecthTaskBySprint();
     if (user) {
       setFirstName(user.user_fname || "");
       setLastName(user.user_lname || "");
     }
-  }, [user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, sprint]);
 
   return (
     <>
@@ -90,13 +104,24 @@ const Retrospective: React.FC = () => {
             </div>
             <div className="mb-4">
               <label className="block mb-1 font-medium">วงรอบที่</label>
-              <input
-                type="text"
-                value={cycle}
-                onChange={(e) => setCycle(e.target.value)}
-                className="input-primary"
-                placeholder="วงรอบ"
-              />
+              <select
+                onChange={(e) => setSprint(e.target.value)}
+                name=""
+                className="cursor-pointer input-primary"
+                id=""
+              >
+                {/* This sprint */}
+                <option value="" disabled selected>
+                  {sprint}
+                </option>
+
+                {/* All sprints */}
+                {sprints.map((sprint) => (
+                  <option value={sprint.sprint_name}>
+                    {sprint.sprint_name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="mb-4">
