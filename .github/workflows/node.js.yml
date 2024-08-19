@@ -1,0 +1,45 @@
+name: Node.js CI with Docker
+
+on:
+  push:
+    branches: ["master", "develop"]
+  pull_request:
+    branches: ["master", "develop"]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t my-report-server:latest -f report-server/Dockerfile .
+
+      - name: Run Docker container
+        run: |
+          docker run --name my-report-server -d my-report-server:latest
+
+      - name: Install dependencies
+        run: |
+          docker exec my-report-server sh -c "if [ -f package-lock.json ]; then npm ci; else npm install; fi"
+
+      - name: Build the project
+        run: docker exec my-report-server npm run build --if-present
+
+      - name: Run tests
+        run: docker exec my-report-server npm test
+
+      - name: Clean up
+        run: |
+          docker stop my-report-server
+          docker rm my-report-server
