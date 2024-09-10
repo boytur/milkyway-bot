@@ -49,4 +49,49 @@ export const sprints: Sprint[] = [
     sprint_start: "2024-08-27",
     sprint_end: "2024-09-02",
   },
+  {
+    sprint_name: "2/1",
+    sprint_start: "2024-09-03",
+    sprint_end: "2024-09-09",
+  },
+  {
+    sprint_name: "2/2",
+    sprint_start: "2024-09-10",
+    sprint_end: "2024-09-16",
+  },
+  {
+    sprint_name: "2/3",
+    sprint_start: "2024-09-17",
+    sprint_end: "2024-09-23",
+  },
+  {
+    sprint_name: "2/4",
+    sprint_start: "2024-09-24",
+    sprint_end: "2024-09-30",
+  },
+  {
+    sprint_name: "2/5",
+    sprint_start: "2024-10-01",
+    sprint_end: "2024-10-07",
+  },
+  {
+    sprint_name: "2/6",
+    sprint_start: "2024-10-08",
+    sprint_end: "2024-10-14",
+  },
+  {
+    sprint_name: "2/7",
+    sprint_start: "2024-10-15",
+    sprint_end: "2024-10-21",
+  },
+  {
+    sprint_name: "2/8",
+    sprint_start: "2024-10-22",
+    sprint_end: "2024-10-28",
+  },
+  {
+    sprint_name: "2/9",
+    sprint_start: "2024-10-29",
+    sprint_end: "2024-11-04",
+  },
 ];
