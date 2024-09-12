@@ -10,12 +10,19 @@ export class TaskController {
   static async getUserTask(req: Request, res: Response) {
     try {
       const authHeader = req.headers.authorization;
+
       if (!authHeader) {
         return res.status(403).json({ error: "No token provided" });
       }
+      let { limit, page } = req.query;
 
       const acc_tk = authHeader.split(" ")[1];
       const user = (await Encrypt.getUserData(acc_tk)) as JwtPayload;
+      // Validate and parse limit and page
+      const parsedLimit = TaskController.validateLimit(Number(limit || 10));
+      const parsedPage = TaskController.validatePage(Number(page || 1));
+
+      const offset = (parsedPage - 1) * parsedLimit;
 
       if (!user) {
         return res
@@ -23,16 +30,26 @@ export class TaskController {
           .json({ error: "You are not allowed to access this resource" });
       }
 
-      const tasks = await Task.findAll({
+      const { rows: tasks, count } = await Task.findAndCountAll({
         order: [["date", "DESC"]],
         where: {
           user_id: user.user_id,
         },
+        offset,
+        limit: parsedLimit,
       });
 
-      return res
-        .status(200)
-        .json({ success: true, message: " Get tasks successfully!", tasks });
+      return res.status(200).json({
+        success: true,
+        message: " Get tasks successfully!",
+        meta: {
+          total: count,
+          page: parsedPage,
+          totalPage: Math.ceil(count / parsedLimit),
+          limit: parsedLimit,
+        },
+        tasks,
+      });
     } catch (err) {
       console.log(err);
       res.status(500).json({ error: "Internal server error" });
@@ -41,9 +58,11 @@ export class TaskController {
 
   static async getTasks(req: Request, res: Response) {
     try {
-      let date = req.query.date as string | undefined;
-      let status = req.query.status as string | undefined;
-      let showUnchecked = req.query.showUnchecked as string | undefined;
+      let { date, status, showUnchecked, limit, page } = req.query;
+
+      // Validate and parse limit and page
+      const parsedLimit = TaskController.validateLimit(Number(limit || 10));
+      const parsedPage = TaskController.validatePage(Number(page || 1));
 
       let query: any = {};
 
@@ -51,7 +70,7 @@ export class TaskController {
         query.is_check = false;
       } else {
         if (date) {
-          if (!isValidDate(date)) {
+          if (!TaskController.isValidDate(date as string)) {
             return res.status(400).json({ error: "Invalid date format" });
           }
           query.date = {
@@ -66,26 +85,29 @@ export class TaskController {
         }
       }
 
-      const tasks = await Task.findAll({
+      const offset = (parsedPage - 1) * parsedLimit;
+
+      const { rows: tasks, count } = await Task.findAndCountAll({
         order: [["date", "DESC"]],
         where: query,
         include: [User],
+        offset,
+        limit: parsedLimit,
       });
 
       return res.status(200).json({
         success: true,
         message: "Get tasks successfully!",
-        date,
+        meta: {
+          total: count,
+          page: parsedPage,
+          limit: parsedLimit,
+        },
         tasks,
       });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Internal server error" });
-    }
-
-    function isValidDate(dateString: string) {
-      const regex = /^\d{4}-\d{2}-\d{2}$/;
-      return regex.test(dateString);
     }
   }
 
@@ -301,5 +323,26 @@ export class TaskController {
       console.error(err);
       res.status(500).json({ error: "Internal server error" });
     }
+  }
+  // Helper function to validate limit (perPage)
+  static validateLimit(perPage: number): number {
+    return perPage > 0 && perPage <= 100 ? perPage : 10;
+  }
+
+  // Helper function to validate page
+  static validatePage(page: number): number {
+    return page > 0 ? page : 1;
+  }
+
+  // Helper function to validate numbers using regex (only numeric values allowed)
+  static isValidNumber(value: any): boolean {
+    const regex = /^[0-9]+$/;
+    return regex.test(value);
+  }
+
+  // Helper function to validate date format (YYYY-MM-DD)
+  static isValidDate(dateString: string): boolean {
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    return regex.test(dateString);
   }
 }
